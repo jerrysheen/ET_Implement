@@ -41,6 +41,7 @@ namespace ET
 
 	        unit.AddComponent<XunLuoPathComponent>();
 	        
+			// 抛出一个Unit事件， 让HotFixView中的函数去处理
 	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
             return unit;
         }
