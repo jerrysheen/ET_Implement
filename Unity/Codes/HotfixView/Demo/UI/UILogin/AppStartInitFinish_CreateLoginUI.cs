@@ -2,6 +2,8 @@
 
 
 
+using System.Security.Policy;
+
 namespace ET
 {
 	public class AppStartInitFinish_CreateLoginUI: AEvent<EventType.AppStartInitFinish>
@@ -10,10 +12,19 @@ namespace ET
 		{
 			UIHelper.Create(args.ZoneScene, UIType.UILogin, UILayer.Mid).Coroutine();
 
-			Computer computer = args.ZoneScene.AddChild<Computer>();
-
-			computer.AddComponent<PCCaseComponent>();
-			computer.Start();
+			TestLifeTimeForComputer(args.ZoneScene).Coroutine();
 		}
+
+
+		public async ETTask TestLifeTimeForComputer(Scene zoneScene) 
+		{
+            Computer computer = zoneScene.AddChild<Computer>();
+
+            computer.AddComponent<PCCaseComponent>();
+            computer.Start();
+
+			await TimerComponent.Instance.WaitAsync(3000);
+			computer.Dispose();
+        }
 	}
 }
